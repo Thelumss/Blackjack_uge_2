@@ -13,10 +13,12 @@ namespace Blackjack
         public bool Dealerturn(int score)
         {
             if (score <= 17) 
-            { 
+            {
+                Console.WriteLine("HIT");
             return true;
             }else
             {
+                Console.WriteLine("STAND");
                 return false;
             }
         }

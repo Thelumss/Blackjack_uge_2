@@ -14,17 +14,21 @@ namespace Blackjack
     {
 
         List<Card> deck = new List<Card>();
+        // sets up the game and as in the cards 
         public Game() {
-                
-            for (int i = 1; i <= 4; i++)
+            for (int d = 1; d <= 10 ; d++)
+            {
+            for (int s = 1; s <= 4; s++)
                 {
 
-                for (int j = 2; j <= 14; j++)
-                {
-                    Card card = new Card(j,i,j);
-                    deck.Add(card);
+                    for (int v = 2; v <= 14; v++)
+                    {
+                        Card card = new Card(v,s,v);
+                        deck.Add(card);
+                    }
                 }
-                }
+                
+            }
         }
 
         public void GameLoop()
@@ -163,6 +167,15 @@ namespace Blackjack
                 print(dealer.Hand);
                 Console.WriteLine();
                 Console.WriteLine("player wins on dealer went bust");
+                Console.ReadLine();
+            } else if (((scoreCalc(player.Hand) == scoreCalc(dealer.Hand)) && !playerbust) && !dealerbust)
+            {
+                Console.Clear();
+                print(player.Hand);
+                Console.WriteLine();
+                print(dealer.Hand);
+                Console.WriteLine();
+                Console.WriteLine("it a push");
                 Console.ReadLine();
             }
         }
