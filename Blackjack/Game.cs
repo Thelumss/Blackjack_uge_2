@@ -198,7 +198,10 @@ namespace Blackjack
                 for (int i = 0; i < decks.Count; i++)
                 {
                     {
-                        if (score + 11 <= 21) { score += 11; }
+                        if (score + 11 <= 21)
+                        { 
+                            score += 11;
+                        }
 
                         else { score += 1; }
 
