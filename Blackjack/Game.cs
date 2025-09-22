@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -48,13 +50,18 @@ namespace Blackjack
             player.Hand.Add(deck[0]);
             deck.Remove(player.Hand[player.Hand.Count - 1]);
 
-            for (int i = 0; i < dealer.Hand.Count; i++)
+            for (int i = 0; i < player.Hand.Count; i++)
             {
                 Console.WriteLine(player.Hand[i].Name);
                 Console.WriteLine(player.Hand[i].Suit);
                 Console.WriteLine(player.Hand[i].Value);
                 Console.WriteLine();
             }
+            Console.WriteLine(scoreCalc(player.Hand));
+
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
 
             for (int i = 0; i < dealer.Hand.Count; i++)
             {
@@ -64,7 +71,32 @@ namespace Blackjack
                 Console.WriteLine();
             }
 
+            Console.WriteLine(scoreCalc(dealer.Hand));
+        }
 
+        public int scoreCalc(List<Card> cards){
+            int score = 0;
+            List<Card> decks = new List<Card>();
+            for (int i = 0; i < cards.Count; i++)
+            {
+                if (cards[i].Value != 0)
+                {
+                score += cards[i].Value;
+
+                }else
+                {
+                    decks.Add(cards[i]);
+                }
+            }
+            if (decks.Count > 0)
+                for (int i = 0; i < decks.Count; i++)
+                {
+                    {
+                        if (score + 11 >= 21) { score += 11; } else { score += 1; }
+
+                    }
+                }
+            return score;
         }
 
     }
