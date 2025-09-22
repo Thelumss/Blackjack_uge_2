@@ -21,9 +21,27 @@ namespace Blackjack
                     deck.Add(card);
                 }
                 }
-            Console.WriteLine(deck[10].Suit);
-            Console.WriteLine(deck[10].Name);
-            Console.WriteLine(deck[10].Value);
+        }
+
+        public void GameLoop() {
+            Random rng = new Random();
+            int n = deck.Count;
+            while (n > 1)
+            {
+                n--;
+                int k = rng.Next(n + 1);
+                Card value = deck[k];
+                deck[k] = deck[n];
+                deck[n] = value;
+            }
+
+            for (int i = 0; i < deck.Count; i++)
+            {
+                Console.WriteLine(deck[i].Name);
+                Console.WriteLine(deck[i].Suit);
+                Console.WriteLine(deck[i].Value);
+                Console.WriteLine();
+            }
         }
 
     }
