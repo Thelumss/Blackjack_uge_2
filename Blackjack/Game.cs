@@ -24,6 +24,8 @@ namespace Blackjack
         }
 
         public void GameLoop() {
+            Player player = new Player();
+            Dealer dealer = new Dealer();  
             Random rng = new Random();
             int n = deck.Count;
             while (n > 1)
@@ -35,13 +37,34 @@ namespace Blackjack
                 deck[n] = value;
             }
 
-            for (int i = 0; i < deck.Count; i++)
+            dealer.Hand.Add(deck[0]);
+            deck.Remove(dealer.Hand[dealer.Hand.Count - 1]);
+            dealer.Hand.Add(deck[0]);
+            deck.Remove(dealer.Hand[dealer.Hand.Count - 1]);
+
+
+            player.Hand.Add(deck[0]);
+            deck.Remove(player.Hand[player.Hand.Count - 1]);
+            player.Hand.Add(deck[0]);
+            deck.Remove(player.Hand[player.Hand.Count - 1]);
+
+            for (int i = 0; i < dealer.Hand.Count; i++)
             {
-                Console.WriteLine(deck[i].Name);
-                Console.WriteLine(deck[i].Suit);
-                Console.WriteLine(deck[i].Value);
+                Console.WriteLine(player.Hand[i].Name);
+                Console.WriteLine(player.Hand[i].Suit);
+                Console.WriteLine(player.Hand[i].Value);
                 Console.WriteLine();
             }
+
+            for (int i = 0; i < dealer.Hand.Count; i++)
+            {
+                Console.WriteLine(dealer.Hand[i].Name);
+                Console.WriteLine(dealer.Hand[i].Suit);
+                Console.WriteLine(dealer.Hand[i].Value);
+                Console.WriteLine();
+            }
+
+
         }
 
     }
