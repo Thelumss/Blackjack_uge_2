@@ -10,10 +10,15 @@ namespace Blackjack
     class Dealer: Player
     {
         // start for hvad dealer gøre i sin tur
-        public String Dealerturn()
+        public bool Dealerturn(int score)
         {
-            return "stand";
-            return "hit";
+            if (score <= 17) 
+            { 
+            return true;
+            }else
+            {
+                return false;
+            }
         }
 
     }

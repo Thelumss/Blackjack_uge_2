@@ -32,6 +32,8 @@ namespace Blackjack
 
             Player player = new Player();
             Dealer dealer = new Dealer();
+            bool playerbust = false;
+            bool dealerbust = false;
             Random rng = new Random();
             int n = deck.Count;
             while (n > 1)
@@ -77,6 +79,7 @@ namespace Blackjack
                         deck.Remove(player.Hand[player.Hand.Count - 1]);
                         break;
                     case "STAND":
+                        gameLoop = false;
                         break;
                     default:
                         System.Environment.Exit(1);
@@ -88,7 +91,79 @@ namespace Blackjack
                     Console.Clear();
                     print(player.Hand);
                     Console.WriteLine("you when bust with a score: "+scoreCalc(player.Hand));
+                    Console.ReadLine();
+                    playerbust = true;
                 }
+            }
+            if (!playerbust) {
+            gameLoop = true;
+            }
+            
+            dealer.Hand.Add(deck[0]);
+            deck.Remove(dealer.Hand[dealer.Hand.Count - 1]);
+
+            while (gameLoop)
+            {
+                print (dealer.Hand);
+
+                if (dealer.Dealerturn(scoreCalc(dealer.Hand)))
+                {
+                    dealer.Hand.Add(deck[0]);
+                    deck.Remove(dealer.Hand[dealer.Hand.Count - 1]);
+
+                    if (scoreCalc(dealer.Hand) > 21)
+                    {
+                        dealerbust = true;
+                        break;
+                    }
+                }
+                else {
+                    gameLoop = false;
+                    Console.Clear();
+                    print(dealer.Hand);
+                    Console.ReadLine ();
+                }
+
+            }
+
+            if (((scoreCalc(player.Hand) > scoreCalc(dealer.Hand)) && !playerbust) && !dealerbust)
+            {
+                Console.Clear();
+                print(player.Hand);
+                Console.WriteLine();
+                print(dealer.Hand);
+                Console.WriteLine();
+                Console.WriteLine("player wins on a score of " + scoreCalc(player.Hand));
+                Console.ReadLine();
+            }
+            else if (((scoreCalc(player.Hand) < scoreCalc(dealer.Hand)) && !playerbust) && !dealerbust)
+            {
+                Console.Clear();
+                print(player.Hand);
+                Console.WriteLine();
+                print(dealer.Hand);
+                Console.WriteLine();
+                Console.WriteLine("dealer wins on a score of " + scoreCalc(dealer.Hand));
+                Console.ReadLine();
+            }
+            else if (playerbust && !dealerbust)
+            {
+                Console.Clear();
+                print(player.Hand);
+                Console.WriteLine();
+                print(dealer.Hand);
+                Console.WriteLine();
+                Console.WriteLine("Dealer wins on player went bust");
+                Console.ReadLine();
+            } else if (!playerbust && dealerbust) 
+            {
+                Console.Clear();
+                print(player.Hand);
+                Console.WriteLine();
+                print(dealer.Hand);
+                Console.WriteLine();
+                Console.WriteLine("player wins on dealer went bust");
+                Console.ReadLine();
             }
         }
 
@@ -110,7 +185,9 @@ namespace Blackjack
                 for (int i = 0; i < decks.Count; i++)
                 {
                     {
-                        if (score + 11 >= 21) { score += 11; } else { score += 1; }
+                        if (score + 11 <= 21) { score += 11; }
+
+                        else { score += 1; }
 
                     }
                 }
