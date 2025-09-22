@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,9 +27,11 @@ namespace Blackjack
                 }
         }
 
-        public void GameLoop() {
+        public void GameLoop()
+        {
+
             Player player = new Player();
-            Dealer dealer = new Dealer();  
+            Dealer dealer = new Dealer();
             Random rng = new Random();
             int n = deck.Count;
             while (n > 1)
@@ -41,37 +45,51 @@ namespace Blackjack
 
             dealer.Hand.Add(deck[0]);
             deck.Remove(dealer.Hand[dealer.Hand.Count - 1]);
-            dealer.Hand.Add(deck[0]);
-            deck.Remove(dealer.Hand[dealer.Hand.Count - 1]);
 
 
             player.Hand.Add(deck[0]);
             deck.Remove(player.Hand[player.Hand.Count - 1]);
             player.Hand.Add(deck[0]);
             deck.Remove(player.Hand[player.Hand.Count - 1]);
-
-            for (int i = 0; i < player.Hand.Count; i++)
+            bool gameLoop = true;
+            while (gameLoop)
             {
-                Console.WriteLine(player.Hand[i].Name);
-                Console.WriteLine(player.Hand[i].Suit);
-                Console.WriteLine(player.Hand[i].Value);
-                Console.WriteLine();
+                Console.Clear();
+
+                print(player.Hand);
+                int score = scoreCalc(player.Hand);
+
+                Console.WriteLine("score:"+score+"\n");
+                
+
+                Console.WriteLine("" +
+                    "Type HIT to get a other card \n" +
+                    "Type STAND to be done getting cards \n" +
+                    "Anything else and the dealer will eject you from the table \n");
+
+                string respone = Console.ReadLine();
+                
+                
+                switch (respone.ToUpper())
+                {
+                    case "HIT":
+                        player.Hand.Add(deck[0]);
+                        deck.Remove(player.Hand[player.Hand.Count - 1]);
+                        break;
+                    case "STAND":
+                        break;
+                    default:
+                        System.Environment.Exit(1);
+                        break;
+                }
+                if (scoreCalc(player.Hand) > 21) 
+                { 
+                    gameLoop = false;
+                    Console.Clear();
+                    print(player.Hand);
+                    Console.WriteLine("you when bust with a score: "+scoreCalc(player.Hand));
+                }
             }
-            Console.WriteLine(scoreCalc(player.Hand));
-
-            Console.WriteLine();
-            Console.WriteLine();
-            Console.WriteLine();
-
-            for (int i = 0; i < dealer.Hand.Count; i++)
-            {
-                Console.WriteLine(dealer.Hand[i].Name);
-                Console.WriteLine(dealer.Hand[i].Suit);
-                Console.WriteLine(dealer.Hand[i].Value);
-                Console.WriteLine();
-            }
-
-            Console.WriteLine(scoreCalc(dealer.Hand));
         }
 
         public int scoreCalc(List<Card> cards){
@@ -97,6 +115,14 @@ namespace Blackjack
                     }
                 }
             return score;
+        }
+
+        public void print(List<Card> hand) 
+        {
+            for (int i = 0; i < hand.Count; i++)
+            {
+                Console.WriteLine(hand[i].Name + " of " + hand[i].Suit);
+            }
         }
 
     }
