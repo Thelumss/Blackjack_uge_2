@@ -14,6 +14,8 @@ namespace Blackjack
     {
 
         List<Card> deck = new List<Card>();
+        Player player = new Player();
+        Dealer dealer = new Dealer();
         // sets up the game and as in the cards 
         public Game() {
             for (int d = 1; d <= 1 ; d++)
@@ -34,8 +36,6 @@ namespace Blackjack
         public void GameLoop()
         {
 
-            Player player = new Player();
-            Dealer dealer = new Dealer();
             
             Random rng = new Random();
             int n = deck.Count;
@@ -48,14 +48,14 @@ namespace Blackjack
                 deck[n] = value;
             }
 
-            dealer.Hand.Add(deck[0]);
-            deck.Remove(dealer.Hand[dealer.Hand.Count - 1]);
+            this.dealer.Hand.Add(deck[0]);
+            this.deck.Remove(dealer.Hand[dealer.Hand.Count - 1]);
 
 
-            player.Hand.Add(deck[0]);
-            deck.Remove(player.Hand[player.Hand.Count - 1]);
-            player.Hand.Add(deck[0]);
-            deck.Remove(player.Hand[player.Hand.Count - 1]);
+            this.player.Hand.Add(deck[0]);
+            this.deck.Remove(this.player.Hand[this.player.Hand.Count - 1]);
+            this.player.Hand.Add(deck[0]);
+            this.deck.Remove(this.player.Hand[this.player.Hand.Count - 1]);
 
             bool gameLoop = true;
             
@@ -63,8 +63,8 @@ namespace Blackjack
             {
                 Console.Clear();
 
-                print(player.Hand);
-                int score = scoreCalc(player.Hand);
+                print(this.player.Hand);
+                int score = scoreCalc(this.player.Hand);
 
                 Console.WriteLine("score:"+score+"\n");
                 
@@ -80,8 +80,8 @@ namespace Blackjack
                 switch (respone.ToUpper())
                 {
                     case "HIT":
-                        player.Hand.Add(deck[0]);
-                        deck.Remove(player.Hand[player.Hand.Count - 1]);
+                        this.player.Hand.Add(deck[0]);
+                        this.deck.Remove(this.player.Hand[this.player.Hand.Count - 1]);
                         break;
                     case "STAND":
                         gameLoop = false;
@@ -90,35 +90,35 @@ namespace Blackjack
                         System.Environment.Exit(1);
                         break;
                 }
-                if (scoreCalc(player.Hand) > 21) 
+                if (scoreCalc(this.player.Hand) > 21) 
                 { 
                     gameLoop = false;
                     Console.Clear();
                     print(player.Hand);
                     Console.WriteLine("you when bust with a score: "+scoreCalc(player.Hand));
                     Console.ReadLine();
-                    player.Isbust = true;
+                    this.player.Isbust = true;
                 }
             }
-            if (!player.Isbust) {
+            if (!this.player.Isbust) {
             gameLoop = true;
             }
             
-            dealer.Hand.Add(deck[0]);
-            deck.Remove(dealer.Hand[dealer.Hand.Count - 1]);
+            this.dealer.Hand.Add(deck[0]);
+            this.deck.Remove(this.dealer.Hand[this.dealer.Hand.Count - 1]);
 
             while (gameLoop)
             {
-                print (dealer.Hand);
+                print (this.dealer.Hand);
 
-                if (dealer.Dealerturn(scoreCalc(dealer.Hand)))
+                if (this.dealer.Dealerturn(scoreCalc(this.dealer.Hand)))
                 {
-                    dealer.Hand.Add(deck[0]);
-                    deck.Remove(dealer.Hand[dealer.Hand.Count - 1]);
+                    this.dealer.Hand.Add(deck[0]);
+                    this.deck.Remove(this.dealer.Hand[this.dealer.Hand.Count - 1]);
 
-                    if (scoreCalc(dealer.Hand) > 21)
+                    if (scoreCalc(this.dealer.Hand) > 21)
                     {
-                        dealer.Isbust = true;
+                        this.dealer.Isbust = true;
                         break;
                     }
                 }
@@ -131,50 +131,50 @@ namespace Blackjack
 
             }
 
-            if (((scoreCalc(player.Hand) > scoreCalc(dealer.Hand)) && !player.Isbust) && !dealer.Isbust)
+            if (((scoreCalc(this.player.Hand) > scoreCalc(this.dealer.Hand)) && !this.player.Isbust) && !this.dealer.Isbust)
             {
                 Console.Clear();
-                print(player.Hand);
+                print(this.player.Hand);
                 Console.WriteLine();
-                print(dealer.Hand);
+                print(this.dealer.Hand);
                 Console.WriteLine();
-                Console.WriteLine("player wins on a score of " + scoreCalc(player.Hand));
+                Console.WriteLine("player wins on a score of " + scoreCalc(this.player.Hand));
                 Console.ReadLine();
             }
-            else if (((scoreCalc(player.Hand) < scoreCalc(dealer.Hand)) && !player.Isbust) && !dealer.Isbust)
+            else if (((scoreCalc(this.player.Hand) < scoreCalc(this.dealer.Hand)) && !this.player.Isbust) && !this.dealer.Isbust)
             {
                 Console.Clear();
-                print(player.Hand);
+                print(this.player.Hand);
                 Console.WriteLine();
                 print(dealer.Hand);
                 Console.WriteLine();
                 Console.WriteLine("dealer wins on a score of " + scoreCalc(dealer.Hand));
                 Console.ReadLine();
             }
-            else if (player.Isbust && !dealer.Isbust)
+            else if (this.player.Isbust && !this.dealer.Isbust)
             {
                 Console.Clear();
-                print(player.Hand);
+                print(this.player.Hand);
                 Console.WriteLine();
-                print(dealer.Hand);
+                print(this.dealer.Hand);
                 Console.WriteLine();
                 Console.WriteLine("Dealer wins on player went bust");
                 Console.ReadLine();
-            } else if (!player.Isbust && dealer.Isbust) 
+            } else if (!this.player.Isbust && this.dealer.Isbust) 
             {
                 Console.Clear();
-                print(player.Hand);
+                print(this.player.Hand);
                 Console.WriteLine();
-                print(dealer.Hand);
+                print(this.dealer.Hand);
                 Console.WriteLine();
                 Console.WriteLine("player wins on dealer went bust");
                 Console.ReadLine();
-            } else if (((scoreCalc(player.Hand) == scoreCalc(dealer.Hand)) && !player.Isbust) && !dealer.Isbust)
+            } else if (((scoreCalc(this.player.Hand) == scoreCalc(this.dealer.Hand)) && !this.player.Isbust) && !this.dealer.Isbust)
             {
                 Console.Clear();
-                print(player.Hand);
+                print(this.player.Hand);
                 Console.WriteLine();
-                print(dealer.Hand);
+                print(this.dealer.Hand);
                 Console.WriteLine();
                 Console.WriteLine("it a push");
                 Console.ReadLine();
