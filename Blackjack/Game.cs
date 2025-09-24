@@ -14,125 +14,104 @@ namespace Blackjack
     {
 
         List<Card> deck = new List<Card>();
-        Player player = new Player();
-        Dealer dealer = new Dealer();
+        Player player = new Player(100);
+        Dealer dealer = new Dealer(0);
+        bool turnLoop = true;
+        bool gameLoop = true;
         // sets up the game and as in the cards 
         public Game() {
-            for (int d = 1; d <= 1 ; d++)
-            {
-            for (int s = 1; s <= 4; s++)
-                {
-
-                    for (int v = 2; v <= 14; v++)
-                    {
-                        Card card = new Card(v,s,v);
-                        deck.Add(card);
-                    }
-                }
-                
-            }
+            Newdeck();
         }
 
         public void GameLoop()
         {
 
-            
+            while (gameLoop)
+            {
+
+                Newdeck();
+
             Random rng = new Random();
-            int n = deck.Count;
+            int n = this.deck.Count;
             while (n > 1)
             {
                 n--;
                 int k = rng.Next(n + 1);
-                Card value = deck[k];
-                deck[k] = deck[n];
-                deck[n] = value;
+                Card value = this.deck[k];
+                this.deck[k] = this.deck[n];
+                this.deck[n] = value;
             }
-
-            this.dealer.Hand.Add(deck[0]);
-            this.deck.Remove(dealer.Hand[dealer.Hand.Count - 1]);
-
-
-            this.player.Hand.Add(deck[0]);
-            this.deck.Remove(this.player.Hand[this.player.Hand.Count - 1]);
-            this.player.Hand.Add(deck[0]);
-            this.deck.Remove(this.player.Hand[this.player.Hand.Count - 1]);
-
-            bool gameLoop = true;
+                this.player.ClearHand();
+                this.dealer.ClearHand();
             
-            while (gameLoop)
-            {
-                Console.Clear();
+                this.player.Isbust = false;
+                this.dealer.Isbust = false;
 
-                print(this.player.Hand);
-                int score = scoreCalc(this.player.Hand);
+                this.player.Wager = 0;
 
-                Console.WriteLine("score:"+score+"\n");
-                
+                this.turnLoop = true;
 
-                Console.WriteLine("" +
-                    "Type HIT to get a other card \n" +
-                    "Type STAND to be done getting cards \n" +
-                    "Anything else and the dealer will eject you from the table \n");
 
-                string respone = Console.ReadLine();
-                
-                
-                switch (respone.ToUpper())
-                {
-                    case "HIT":
-                        this.player.Hand.Add(deck[0]);
-                        this.deck.Remove(this.player.Hand[this.player.Hand.Count - 1]);
-                        break;
-                    case "STAND":
-                        gameLoop = false;
-                        break;
-                    default:
-                        System.Environment.Exit(1);
-                        break;
-                }
-                if (scoreCalc(this.player.Hand) > 21) 
-                { 
-                    gameLoop = false;
-                    Console.Clear();
-                    print(player.Hand);
-                    Console.WriteLine("you when bust with a score: "+scoreCalc(player.Hand));
-                    Console.ReadLine();
-                    this.player.Isbust = true;
-                }
-            }
-            if (!this.player.Isbust) {
-            gameLoop = true;
-            }
-            
-            this.dealer.Hand.Add(deck[0]);
+                Console.WriteLine("What about of Money will you wager of your total of "+this.player.Money);
+                this.player.Wager = int.Parse(Console.ReadLine());
+
+                this.player.Money -= this.player.Wager;
+
+            this.dealer.Hand.Add(this.deck[0]);
             this.deck.Remove(this.dealer.Hand[this.dealer.Hand.Count - 1]);
 
-            while (gameLoop)
+
+            this.player.Hand.Add(this.deck[0]);
+            this.deck.Remove(this.player.Hand[this.player.Hand.Count - 1]);
+            this.player.Hand.Add(this.deck[0]);
+            this.deck.Remove(this.player.Hand[this.player.Hand.Count - 1]);
+
+            
+            while (this.turnLoop)
             {
-                print (this.dealer.Hand);
-
-                if (this.dealer.Dealerturn(scoreCalc(this.dealer.Hand)))
-                {
-                    this.dealer.Hand.Add(deck[0]);
-                    this.deck.Remove(this.dealer.Hand[this.dealer.Hand.Count - 1]);
-
-                    if (scoreCalc(this.dealer.Hand) > 21)
-                    {
-                        this.dealer.Isbust = true;
-                        break;
-                    }
-                }
-                else {
-                    gameLoop = false;
-                    Console.Clear();
-                    print(dealer.Hand);
-                    Console.ReadLine ();
-                }
-
+                PlayerTurn();
             }
 
+
+            if (!this.player.Isbust) {
+                this.turnLoop = true;
+            }
+            
+
+
+            this.dealer.Hand.Add(deck[0]);
+            this.deck.Remove(this.dealer.Hand[this.dealer.Hand.Count - 1]);
+            
+            while (this.turnLoop)
+            {
+                Dealerturn();
+            }
+
+            GamesOutCome();
+                if (this.player.Money <= 0)
+                {
+                    gameLoop = false;
+                    Console.Clear();
+                    Console.WriteLine("" +
+                        "You get kicked out of the casino for being a losser with no money!");
+                }
+   
+            }
+        }
+
+        public void GamesOutCome()
+        {
             if (((scoreCalc(this.player.Hand) > scoreCalc(this.dealer.Hand)) && !this.player.Isbust) && !this.dealer.Isbust)
             {
+                if (scoreCalc(this.player.Hand)==21)
+                {
+                    double temp = 2.5;
+                    this.player.Money += (float)(this.player.Wager*temp);
+                }
+                else
+                {
+                    this.player.Money += this.player.Wager * 2;
+                }
                 Console.Clear();
                 print(this.player.Hand);
                 Console.WriteLine();
@@ -153,6 +132,7 @@ namespace Blackjack
             }
             else if (this.player.Isbust && !this.dealer.Isbust)
             {
+
                 Console.Clear();
                 print(this.player.Hand);
                 Console.WriteLine();
@@ -160,8 +140,10 @@ namespace Blackjack
                 Console.WriteLine();
                 Console.WriteLine("Dealer wins on player went bust");
                 Console.ReadLine();
-            } else if (!this.player.Isbust && this.dealer.Isbust) 
+            }
+            else if (!this.player.Isbust && this.dealer.Isbust)
             {
+                this.player.Money += this.player.Wager*2;
                 Console.Clear();
                 print(this.player.Hand);
                 Console.WriteLine();
@@ -169,8 +151,10 @@ namespace Blackjack
                 Console.WriteLine();
                 Console.WriteLine("player wins on dealer went bust");
                 Console.ReadLine();
-            } else if (((scoreCalc(this.player.Hand) == scoreCalc(this.dealer.Hand)) && !this.player.Isbust) && !this.dealer.Isbust)
+            }
+            else if (((scoreCalc(this.player.Hand) == scoreCalc(this.dealer.Hand)) && !this.player.Isbust) && !this.dealer.Isbust)
             {
+                this.player.Money += this.player.Wager;
                 Console.Clear();
                 print(this.player.Hand);
                 Console.WriteLine();
@@ -181,6 +165,72 @@ namespace Blackjack
             }
         }
 
+        public void Dealerturn ()
+        {
+            print(this.dealer.Hand);
+
+            if (this.dealer.Dealerturn(scoreCalc(this.dealer.Hand)))
+            {
+                this.dealer.Hand.Add(deck[0]);
+                this.deck.Remove(this.dealer.Hand[this.dealer.Hand.Count - 1]);
+
+                if (scoreCalc(this.dealer.Hand) > 21)
+                {
+                    this.dealer.Isbust = true;
+                }
+            }
+            else
+            {
+                this.turnLoop = false;
+                Console.Clear();
+                print(this.dealer.Hand);
+                Console.ReadLine();
+            }
+        }
+        public void PlayerTurn()
+        {
+            
+            Console.Clear();
+
+            print(this.player.Hand);
+            int score = scoreCalc(this.player.Hand);
+
+            Console.WriteLine("" +
+                "score:" + score + "\n" +
+                "you have this much: "+this.player.Money+" money beyon what you wagered\n");
+
+            Console.WriteLine("" +
+                "Type HIT to get a other card \n" +
+                "Type STAND to be done getting cards \n" +
+                "Anything else and the dealer will eject you from the table \n");
+
+            string respone = Console.ReadLine();
+
+
+            switch (respone.ToUpper())
+            {
+                case "HIT":
+                    this.player.Hand.Add(this.deck[0]);
+                    this.deck.Remove(this.player.Hand[this.player.Hand.Count - 1]);
+                    break;
+                case "STAND":
+                    this.turnLoop = false;
+                    break;
+                default:
+                    System.Environment.Exit(1);
+                    break;
+            }
+            if (scoreCalc(this.player.Hand) > 21)
+            {
+                this.turnLoop = false;
+                Console.Clear();
+                print(this.player.Hand);
+                Console.WriteLine("you when bust with a score: " + scoreCalc(this.player.Hand));
+                Console.ReadLine();
+                this.player.Isbust = true;
+            }
+
+        }
         public int scoreCalc(List<Card> cards){
             int score = 0;
             List<Card> decks = new List<Card>();
@@ -217,6 +267,24 @@ namespace Blackjack
             {
                 Console.WriteLine(hand[i].Name + " of " + hand[i].Suit);
             }
+        }
+
+        public void Newdeck()
+        {
+            for (int d = 1; d <= 1; d++)
+            {
+                for (int s = 1; s <= 4; s++)
+                {
+
+                    for (int v = 2; v <= 14; v++)
+                    {
+                        Card card = new Card(v, s, v);
+                        deck.Add(card);
+                    }
+                }
+
+            }
+
         }
 
     }
