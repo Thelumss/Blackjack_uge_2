@@ -11,6 +11,8 @@ namespace Blackjack
         // spillers hånd 
         private List<Card> hand = new List<Card>();
 
+        private bool isbust = false;
+
         // måde på at få spillers hånd
         public List<Card> Hand { get => hand; set => hand = value; }
     }
