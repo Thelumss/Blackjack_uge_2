@@ -9,26 +9,28 @@ namespace Blackjack
     class Player
     {
         // spillers hånd 
-        private List<Card> hand = new List<Card>();
+        private List<List<Card>> hand = new List<List<Card>>();
         private double money = 0;
-        private double wager = 0;
-        private bool isbust = false;
+        private List<double> wager = new List<double>();
+        private List<bool> isbust = new List<bool>();
 
         public Player(float money)
         {
             this.Money = money;
+            this.hand.Add(new List<Card>());
         }
 
         public void ClearHand()
         {
-            hand.Clear();
+            Hand.Clear();
         }
 
 
         // måde på at få spillers hånd
-        public List<Card> Hand { get => hand; set => hand = value; }
-        public bool Isbust { get => isbust; set => isbust = value; }
+
+        public List<List<Card>> Hand { get => hand; set => hand = value; }
         public double Money { get => money; set => money = value; }
-        public double Wager { get => wager; set => wager = value; }
+        public List<double> Wager { get => wager; set => wager = value; }
+        public List<bool> Isbust { get => isbust; set => isbust = value; }
     }
 }

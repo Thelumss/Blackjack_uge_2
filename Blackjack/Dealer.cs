@@ -14,6 +14,7 @@ namespace Blackjack
 
         }
 
+
         // start for hvad dealer gøre i sin tur
         public bool Dealerturn(int score)
         {
