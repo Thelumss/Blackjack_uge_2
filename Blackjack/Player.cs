@@ -17,7 +17,6 @@ namespace Blackjack
         public Player(float money)
         {
             this.Money = money;
-            this.hand.Add(new List<Card>());
         }
 
         public void ClearHand()
