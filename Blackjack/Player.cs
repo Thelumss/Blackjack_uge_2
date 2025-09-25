@@ -24,6 +24,19 @@ namespace Blackjack
             Hand.Clear();
         }
 
+        public void NewRound()
+        {
+            this.ClearHand();
+            this.Wager.Clear();
+            this.Isbust.Clear();
+
+            List<Card> startPlayerHand = new List<Card>();
+
+            this.Hand.Add(startPlayerHand);
+            this.Wager.Add(0);
+            this.Isbust.Add(false);
+
+        }
         public void PlayerTurn(List<Card> deck, Dealer dealer)
         {
             for (int i = 0; i < this.Hand.Count; i++)

@@ -1,11 +1,10 @@
-﻿using System.Runtime.ConstrainedExecution;
-
-namespace Blackjack
+﻿namespace Blackjack
 {
     internal class Game
     {
 
         List<Card> deck = new List<Card>();
+        List<Player> players = new List<Player>();
         Player player = new Player(100);
         Dealer dealer = new Dealer(0);
         bool gameLoop = true;
@@ -18,26 +17,14 @@ namespace Blackjack
 
         public void GameLoop()
         {
+            this.players.Add(player);
+            this.players.Add(dealer);
             while (gameLoop)
             {
                 // this sets up the game for evrey round so that the players and the dealer are ready for a new round and with a fresh deck 
-                this.player.ClearHand();
-                this.dealer.ClearHand();
-                this.player.Wager.Clear();
-                this.player.Isbust.Clear();
-
-                List<Card> startPlayerHand = new List<Card>();
-                List<Card> startDealerHand = new List<Card>();
-
-                this.player.Hand.Add(startPlayerHand);
-                this.dealer.Hand.Add(startDealerHand);
-                this.player.Wager.Add(0);
-                this.player.Isbust.Add(false);
-                this.dealer.Isbust.Add(false);
-
-                for (int i = 0; i < this.player.Isbust.Count; i++)
+                for (int i = 0; i < this.players.Count; i++)
                 {
-                this.player.Isbust[i] = false;
+                    this.players[i].NewRound();
                 }
 
                 this.deck = Newdeck();
@@ -124,8 +111,8 @@ namespace Blackjack
                     // extra mony if player gets natural blackjack
                     if (this.player.scoreCalc(this.player.Hand[i]) == 21 && this.player.Hand[i].Count ==2)
                     {
-                        double temp = 2.5;
-                        this.player.Money += (float)(this.player.Wager[i] * temp);
+                        double natrualBlackJackBonus = 2.5;
+                        this.player.Money += (float)(this.player.Wager[i] * natrualBlackJackBonus);
                     }
                     else
                     {
