@@ -16,18 +16,32 @@ namespace Blackjack
 
 
         // start for hvad dealer gøre i sin tur
-        public bool Dealerturn(int score)
+        public void Dealerturn(List<Card> deck)
         {
-            if (score <= 17) 
+            bool turnloop = true;
+            while (turnloop)
             {
-                Console.WriteLine("HIT");
-            return true;
-            }else
-            {
-                Console.WriteLine("STAND");
-                return false;
+                print(this.Hand[0]);
+
+                if (scoreCalc(this.Hand[0]) <= 17)
+                {
+
+                    this.Hand[0].Add(deck[0]);
+                    deck.Remove(this.Hand[0][this.Hand[0].Count - 1]);
+
+                    if (scoreCalc(this.Hand[0]) > 21)
+                    {
+                        this.Isbust[0] = true;
+                    }
+                }
+                else
+                {
+                    turnloop = false;
+                    Console.Clear();
+                    print(this.Hand[0]);
+                    Console.ReadLine();
+                }
             }
         }
-
     }
 }
