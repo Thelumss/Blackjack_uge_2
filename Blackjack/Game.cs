@@ -8,7 +8,6 @@ namespace Blackjack
         List<Card> deck = new List<Card>();
         Player player = new Player(100);
         Dealer dealer = new Dealer(0);
-        bool turnLoop = true;
         bool gameLoop = true;
 
         // sets up the game and as in the cards 
@@ -19,11 +18,8 @@ namespace Blackjack
 
         public void GameLoop()
         {
-
             while (gameLoop)
             {
-
-
                 // this sets up the game for evrey round so that the players and the dealer are ready for a new round and with a fresh deck 
                 this.player.ClearHand();
                 this.dealer.ClearHand();
@@ -58,8 +54,6 @@ namespace Blackjack
                     this.deck[k] = this.deck[n];
                     this.deck[n] = value;
                 }
-
-                this.turnLoop = true;
 
                 // the betting segment
                 while (this.player.Wager[0] == 0)
@@ -100,12 +94,10 @@ namespace Blackjack
                 // the users turn
                 this.player.PlayerTurn(this.deck, this.dealer);
 
-                turnLoop = true;
-
                 this.dealer.Dealerturn(this.deck);
-                
 
                 GamesOutCome();
+
                 if (this.player.Money <= 0)
                 {
                     this.gameLoop = false;
