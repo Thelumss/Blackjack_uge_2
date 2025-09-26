@@ -24,7 +24,7 @@ namespace Blackjack
                 print(this.Hand[0]);
 
                 // calculaes the score of the hand less then or eqcual to 17 it is a hit 
-                if (scoreCalc(this.Hand[0]) <= 17)
+                if (scoreCalc(this.Hand[0]) < 17)
                 {
 
                     this.Hand[0].Add(deck[0]);
