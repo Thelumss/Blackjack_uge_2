@@ -8,10 +8,13 @@ namespace Blackjack
 {
     class Player
     {
-        // spillers hånd 
+        // a list of the players hands
         private List<List<Card>> hand = new List<List<Card>>();
+        // there money
         private double money = 0;
+        // list of the players wagers per hand
         private List<double> wager = new List<double>();
+        // list of if the player hand is bust
         private List<bool> isbust = new List<bool>();
 
         public Player(float money)
@@ -19,11 +22,15 @@ namespace Blackjack
             this.Money = money;
         }
 
+
+        // clears the players hand
         public void ClearHand()
         {
             Hand.Clear();
         }
 
+
+        // sets the player up for a new round
         public void NewRound()
         {
             this.ClearHand();
@@ -37,6 +44,34 @@ namespace Blackjack
             this.Isbust.Add(false);
 
         }
+
+        // finds out how much the player is waging in this round
+        public void WagerAction()
+        {
+            while (this.Wager[0] == 0)
+            {
+
+                Console.Clear();
+                Console.WriteLine("What about of Money will you wager of your total of " + this.Money);
+                try
+                {
+                    this.Wager[0] = (int.Parse(Console.ReadLine()));
+                    if (this.Wager[0] <= this.Money)
+                    {
+                        this.Money -= this.Wager[0];
+                    }
+                    else
+                    {
+                        this.Wager[0] = 0;
+                        continue;
+                    }
+
+                }
+                catch { }
+            }
+        }
+
+        // the players turn
         public void PlayerTurn(List<Card> deck, Dealer dealer)
         {
             for (int i = 0; i < this.Hand.Count; i++)
@@ -68,13 +103,13 @@ namespace Blackjack
                     Console.WriteLine("\n" +
                         "Type HIT to get a other card \n" +
                         "Type STAND to be done getting cards");
-                    if ((this.Hand.Count == 2) && (this.Money >= this.Wager[i]))
+                    if ((this.Hand[i].Count == 2) && (this.Money >= this.Wager[i]))
                     {
                         Console.WriteLine("type Double to double your wager and get only one card");
 
                     }
 
-                    if ((this.Hand[i].Count == 2) && (this.Hand[i][0].Name == this.Hand[i][1].Name) && (this.Money > this.Wager[i]))
+                    if ((this.Hand[i].Count == 2) && (this.Hand[i][0].Value == this.Hand[i][1].Value) && (this.Money > this.Wager[i]))
                     {
                         Console.WriteLine("type split to split your hand in to two hands");
                     }
@@ -148,6 +183,7 @@ namespace Blackjack
             }
         }
 
+        // prints the players hand
         public void print(List<Card> hand)
         {
             for (int i = 0; i < hand.Count; i++)
@@ -156,6 +192,7 @@ namespace Blackjack
             }
         }
 
+        // calculates the score of a hand
         public int scoreCalc(List<Card> cards)
         {
             int score = 0;
@@ -188,9 +225,6 @@ namespace Blackjack
             return score;
         }
 
-
-
-        // måde på at få spillers hånd
 
         public List<List<Card>> Hand { get => hand; set => hand = value; }
         public double Money { get => money; set => money = value; }

@@ -1,8 +1,9 @@
 ﻿namespace Blackjack
 {
-    internal class Game
+    class Game
     {
 
+        // Game atributes
         List<Card> deck = new List<Card>();
         List<Player> players = new List<Player>();
         Player player = new Player(100);
@@ -17,8 +18,9 @@
 
         public void GameLoop()
         {
-            this.players.Add(player);
+            //where the dealder and player get add to players for ease of som actions
             this.players.Add(dealer);
+            this.players.Add(player);
             while (gameLoop)
             {
                 // this sets up the game for evrey round so that the players and the dealer are ready for a new round and with a fresh deck 
@@ -43,27 +45,7 @@
                 }
 
                 // the betting segment
-                while (this.player.Wager[0] == 0)
-                {
-
-                    Console.Clear();
-                    Console.WriteLine("What about of Money will you wager of your total of " + this.player.Money);
-                    try
-                    {
-                        this.player.Wager[0] = (int.Parse(Console.ReadLine()));
-                        if (this.player.Wager[0] <= this.player.Money)
-                        {
-                            this.player.Money -= this.player.Wager[0];
-                        }
-                        else
-                        {
-                            this.player.Wager[0] = 0;
-                            continue;
-                        }
-
-                    }
-                    catch { }
-                }
+                this.player.WagerAction();
 
                 // these work with taking the top card of the deck and adding to the hand and then removeing that specific entry from the list of the deck
                 this.dealer.Hand[0].Add(this.deck[0]);
@@ -81,10 +63,14 @@
                 // the users turn
                 this.player.PlayerTurn(this.deck, this.dealer);
 
+                // dealers turn
                 this.dealer.Dealerturn(this.deck);
 
+                // Games out come
                 GamesOutCome();
 
+
+                // kicks the player out if the player has lost all of there money
                 if (this.player.Money <= 0)
                 {
                     this.gameLoop = false;
@@ -96,6 +82,8 @@
             }
         }
 
+
+        // To handle the results of the player and dealer and see who wins and losses and if it is a push
         public void GamesOutCome()
         {
             for (int i = 0; i < this.player.Hand.Count; i++)
@@ -106,6 +94,7 @@
                     Console.WriteLine("the risults for hand number "+i+1+":");
                 }
 
+                // the player wins and dealer did not go bust
                 if (((this.player.scoreCalc(this.player.Hand[i]) > this.dealer.scoreCalc(this.dealer.Hand[0])) && !this.player.Isbust[i]) && !this.dealer.Isbust[0])
                 {
                     // extra mony if player gets natural blackjack
@@ -126,6 +115,8 @@
                     Console.WriteLine("player wins on a score of " + this.player.scoreCalc(this.player.Hand[i]));
                     Console.ReadLine();
                 }
+                
+                // the dealer win and the player did not go bust
                 else if (((this.player.scoreCalc(this.player.Hand[i]) < this.dealer.scoreCalc(this.dealer.Hand[0])) && !this.player.Isbust[i]) && !this.dealer.Isbust[0])
                 {
 
@@ -136,6 +127,8 @@
                     Console.WriteLine("dealer wins on a score of " + this.dealer.scoreCalc(this.dealer.Hand[0]));
                     Console.ReadLine();
                 }
+
+                // dealer win on player went bust
                 else if (this.player.Isbust[i] && !this.dealer.Isbust[0])
                 {
 
@@ -147,6 +140,8 @@
                     Console.WriteLine("Dealer wins on player went bust");
                     Console.ReadLine();
                 }
+
+                // the player win on the dealer went bust
                 else if (!this.player.Isbust[i] && this.dealer.Isbust[0])
                 {
                     this.player.Money += this.player.Wager[i] * 2;
@@ -158,6 +153,8 @@
                     Console.WriteLine("player wins on dealer went bust");
                     Console.ReadLine();
                 }
+
+                // dealer and player both went bust
                 else if (this.player.Isbust[i] && this.dealer.Isbust[0])
                 {
                     this.player.Money += this.player.Wager[i];
@@ -169,6 +166,8 @@
                     Console.WriteLine("it a push both went bust");
                     Console.ReadLine();
                 }
+
+                // dealer and player landed on the same score and did not go bust
                 else if (((this.player.scoreCalc(this.player.Hand[i]) == this.dealer.scoreCalc(this.dealer.Hand[0])) && !this.player.Isbust[i]) && !this.dealer.Isbust[0])
                 {
                     this.player.Money += this.player.Wager[i];
@@ -183,14 +182,18 @@
             }
         }
 
+        // gerates a new deck of cards for a new round 
         public List<Card> Newdeck()
         {
             List<Card> cards = new List<Card>();
+
+            // this loop is for number of decks
             for (int d = 1; d <= 1; d++)
             {
+                // this loop is for each suit
                 for (int s = 1; s <= 4; s++)
                 {
-
+                    // this loop makes the value and face of the cards
                     for (int v = 2; v <= 14; v++)
                     {
                         Card card = new Card(v, s, v);

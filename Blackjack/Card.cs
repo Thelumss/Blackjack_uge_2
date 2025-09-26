@@ -10,18 +10,78 @@ namespace Blackjack
     internal class Card
     {
         // proporties a Card
-        private int name;
-        private int suit;
+        private string name;
+        private string suit;
         private int value;
 
         public Card(int name,int suit, int value)
-        {
-            this.name = name;
+        { 
             this.value = value;
-            this.suit = suit;
+
+
+            // swich case uses the number to find the correct name
+            switch (name)
+            {
+                case 2:
+                    this.Name = "2";
+                    break;
+                case 3:
+                    this.Name = "3";
+                    break;
+                case 4:
+                    this.Name = "4";
+                    break;
+                case 5:
+                    this.Name = "5";
+                    break;
+                case 6:
+                    this.Name = "6";
+                    break;
+                case 7:
+                    this.Name = "7";
+                    break;
+                case 8:
+                    this.Name = "8";
+                    break;
+                case 9:
+                    this.Name = "9";
+                    break;
+                case 10:
+                    this.Name = "10";
+                    break;
+                case 11:
+                    this.Name = "Jack";
+                    break;
+                case 12:
+                    this.Name = "Queen";
+                    break;
+                case 13:
+                    this.Name = "King";
+                    break;
+                case 14:
+                    this.Name = "Ace";
+                    break;
+            }
+
+            // swich case use number to find the correct suit 
+            switch (suit)
+            {
+                case 1:
+                    this.Suit = "Hearts";
+                    break;
+                case 2:
+                    this.Suit = "Diamonds";
+                    break;
+                case 3:
+                    this.Suit = "Clubs";
+                    break;
+                case 4:
+                    this.Suit = "Spades";
+                    break;
+            }
         }
 
-        // value returner value af kortet i blackjack som er særligt for biled kort og ace
+        // return the value of the card face cards and ace are speciel
         public int Value {
             get 
             {
@@ -33,60 +93,12 @@ namespace Blackjack
             }
         }
 
-        // bruger tallet til at find dens navn
-        public string Name { 
-            get
-            {
-                switch (name) {
-                    case 2:
-                        return "2";
-                    case 3:
-                        return "3";
-                    case 4:
-                        return "4";
-                    case 5:
-                        return "5";
-                    case 6:
-                        return "6";
-                    case 7:
-                        return "7";
-                    case 8:
-                        return "8";
-                    case 9:
-                        return "9";
-                    case 10:
-                        return "10";
-                    case 11:
-                        return "Jack";
-                    case 12:
-                        return "Queen";
-                    case 13:
-                        return "King";
-                    case 14:
-                        return "Ace";
-                }
-                return null;
-            }
-        }
+        // gets the suit
+        public string Suit { get => suit; set => suit = value; }
+        // gets the name
+        public string Name { get => name; set => name = value; }
 
-        // bruger int til at finde den culor
-        public string Suit {
-            get 
-            {
-                switch (suit)
-                {
-                    case 1:
-                        return "Hearts";
-                        
-                    case 2:
-                        return "Diamonds";
-                    case 3:
-                        return "Clubs";
-                    case 4:
-                        return "Spades";
-                }
-                return null;
-            }
-        }
+
+
     }
 }

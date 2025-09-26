@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Blackjack
 {
-    // dealer arver fra plkayer fordi de kommer til at have meget til fældeds men dealer skal kunne lidt mere
-    class Dealer: Player
+    // the dealer inherites from the player because they have a lot in common 
+    class Dealer : Player
     {
         public Dealer(float money) : base(money)
         {
@@ -15,7 +15,7 @@ namespace Blackjack
         }
 
 
-        // start for hvad dealer gøre i sin tur
+        // the dealer turn and action takes the deck from the game
         public void Dealerturn(List<Card> deck)
         {
             bool turnloop = true;
@@ -23,6 +23,7 @@ namespace Blackjack
             {
                 print(this.Hand[0]);
 
+                // calculaes the score of the hand less then or eqcual to 17 it is a hit 
                 if (scoreCalc(this.Hand[0]) <= 17)
                 {
 
@@ -34,6 +35,7 @@ namespace Blackjack
                         this.Isbust[0] = true;
                     }
                 }
+                // if the score is more then 17 the dealer end it's turn
                 else
                 {
                     turnloop = false;
