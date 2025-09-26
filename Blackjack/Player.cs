@@ -153,7 +153,7 @@ namespace Blackjack
                             break;
                         case "INSURANCE":
                             this.Money -= this.Wager[i] / 2;
-                            if (scoreCalc(this.Hand[0]) == 21)
+                            if (scoreCalc(dealer.Hand[0]) == 21)
                             {
                                 Console.WriteLine("The dealer has natrual 21");
                                 this.Money += this.Wager[i];

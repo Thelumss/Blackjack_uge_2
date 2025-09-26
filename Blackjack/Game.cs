@@ -13,7 +13,7 @@
         // sets up the game and as in the cards 
         public Game()
         {
-            this.deck = Newdeck();
+
         }
 
         public void GameLoop()
@@ -91,7 +91,7 @@
                 Console.Clear();
                 if (this.player.Hand.Count != 1)
                 {
-                    Console.WriteLine("the risults for hand number "+(i+1)+":");
+                    Console.WriteLine("the results for hand number " + (i+1)+":");
                 }
 
                 // the player wins and dealer did not go bust
