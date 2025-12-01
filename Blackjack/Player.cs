@@ -123,7 +123,7 @@ namespace Blackjack
 
                     string respone = Console.ReadLine();
 
-
+                    // switch case to determine what the player is doing to do and the subsequent actions to make that happen 
                     switch (respone.ToUpper())
                     {
                         case "HIT":
@@ -168,7 +168,7 @@ namespace Blackjack
                         default:
                             System.Environment.Exit(1);
                             break;
-                    }
+                    }// Calculates if the player goes bust as in there hand value exceeds 21
                     if (scoreCalc(this.Hand[i]) > 21)
                     {
                         turnLoop = false;
